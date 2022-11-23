@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -15,7 +16,6 @@ class State(BaseModel, Base):
     def cities(self):
         """Getter of cities"""
         from models import storage
-        from models.city import City
         list_city = []
         for city in storage.all(City):
             if self.id == city.state_id:
