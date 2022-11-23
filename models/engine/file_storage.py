@@ -14,9 +14,9 @@ class FileStorage:
             return FileStorage.__objects
         else:
             new = {}
-            for key in FileStorage.__objects:
-                if FileStorage.__objects[key].__class__ == cls:
-                    new[key] = FileStorage.__objects[key]
+            for key, value in self.__objects.items():
+                if isinstance(value, cls):
+                    new[key] = value
             return new
 
     def new(self, obj):
@@ -59,8 +59,11 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from __objects"""
         if obj:
-            del (FileStorage.__objects["{}.{}".format(
-                 obj.__class__.__name__, obj.id)])
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+	return
+	if key in self.__objects:
+            del self.__objects[key]
+            self.save()
 
     def close(self):
         """Function that call the reload method"""
