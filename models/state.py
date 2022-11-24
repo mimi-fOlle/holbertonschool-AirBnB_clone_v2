@@ -4,7 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
-
+from models.city import City
 
 class State(BaseModel, Base):
     """ State class """
@@ -17,7 +17,7 @@ class State(BaseModel, Base):
         def cities(self):
             """Getter of cities"""
             from models import storage
-            from models.city import City
+            # from models.city import City
             list_city = []
             for city in storage.all(City):
                 if self.id == city.state_id:
