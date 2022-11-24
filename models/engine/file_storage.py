@@ -60,8 +60,8 @@ class FileStorage:
         """Deletes obj from __objects"""
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-	return
-	if key in self.__objects:
+        return
+        if key in self.__objects:
             del self.__objects[key]
             self.save()
 
