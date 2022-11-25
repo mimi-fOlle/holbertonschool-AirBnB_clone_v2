@@ -32,6 +32,7 @@ class DBStorage:
         from models.place import Place
         from models.amenity import Amenity
         from models.review import Review
+        from models.base_model import Base
 
         new_dict = {}
 
