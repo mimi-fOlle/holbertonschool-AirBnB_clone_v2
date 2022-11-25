@@ -31,9 +31,9 @@ class HBNBCommand(cmd.Cmd):
     }
 
     def preloop(self):
-        """Prints if isatty is false"""
-        if not sys.__stdin__.isatty():
-            print('(hbnb)')
+       """Prints if isatty is false"""
+       if not sys.__stdin__.isatty():
+           print('(hbnb)')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -117,35 +117,34 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        new = args.split(" ")
-        if not new:
+        if not args:
             print("** class name missing **")
             return
-        
-        elif new[0] not in HBNBCommand.classes:
+        new = args.split(" ")
+        if new[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[new[0]]()
 
-        for i in range(1, len(new)):
-            first = new[i].split("=")
+        for first in new[1:]:
+            first = first.split("=", 1)
+            value = first[1]
             try:
                 if first[1][0] == "\"":
-                    first[1] = first[1].replace("\"", "")
-                    first[1] = first[1].replace("_", " ")
-
-                elif "." in first[1]:
-                    first[1] = float(first[1])
+                    value = value[1:-1].replace("_", " ")
 
                 else:
-                    first[1] = int(first[1])
-                    setattr(new_instance, first[0], first[1])
+                    if "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                setattr(new_instance, first[0], value)
             
             except (Exception):
                 continue
 
         new_instance.save()
-        print(new_instance.id)
+        print("{}".format(new_instance.id))
         
 
     def help_create(self):
@@ -221,6 +220,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        objects = storage.all()
         print_list = []
 
         if args:
@@ -228,11 +228,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in objects.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -245,7 +245,8 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        objects = storage.all()
+        for k, v in objects.items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -341,7 +342,3 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
-
-if __name__ == "__main__":
-    HBNBCommand().cmdloop()
