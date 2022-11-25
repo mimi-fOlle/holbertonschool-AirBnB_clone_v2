@@ -3,13 +3,6 @@
 from sqlalchemy import create_engine, MetaData, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 from os import getenv
 
 
@@ -20,6 +13,7 @@ class DBStorage:
 
     def __init__(self):
         """Creates engine connection"""
+        from models.base_model import Base
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       getenv('HBNB_MYSQL_USER'),
                                       getenv('HBNB_MYSQL_PWD'),
@@ -32,6 +26,13 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns a dictionary represent of the query"""
+        from models.state import State
+        from models.city import City
+        from models.user import User
+        from models.place import Place
+        from models.amenity import Amenity
+        from models.review import Review
+
         new_dict = {}
 
         if cls is None:
@@ -65,6 +66,14 @@ class DBStorage:
 
     def reload(self):
         """Creates all tables in the database"""
+        from models.base_model import Base
+        from models.city import City
+        from models.state import State
+        from models.place import Place
+        from models.user import User
+        from models.amenity import Amenity
+        from models.review import Review
+        
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
