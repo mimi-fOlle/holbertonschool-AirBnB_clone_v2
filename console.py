@@ -132,8 +132,6 @@ class HBNBCommand(cmd.Cmd):
             try:
                 if first[1][0] == "\"":
                     value = value[1:-1].replace("_", " ")
-#                   first[1] = first[1].replace("\"", "")
-#                   first[1] = first[1].replace("_", " ")
 
                 else:
                     if "." in value:
@@ -344,5 +342,3 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
-
