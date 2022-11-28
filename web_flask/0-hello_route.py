@@ -12,4 +12,4 @@ def hello_route():
 
 if __name__ == "__main__":
     port = int(getenv("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug = True)
+    app.run(host="0.0.0.0", port=port, debug=True)
