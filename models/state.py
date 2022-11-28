@@ -11,17 +11,16 @@ from models import storage
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
     if getenv('HBNB_TYPE_STORAGE') == 'db':
+        name = Column(String(128), nullable=False)
         cities = relationship("City", backref='state', cascade="all, delete",
                               passive_deletes=True)
 
-    else:
-        @property
-        def cities(self):
-            """Getter of cities"""
-            list_city = []
-            for city in storage.all(City):
-                if self.id == city.state_id:
-                    list_city.append(city)
-            return list_city
+    @property
+    def cities(self):
+        """Getter of cities"""
+        list_city = []
+        for city in storage.all(City):
+            if self.id == city.state_id:
+                list_city.append(city)
+        return list_city
