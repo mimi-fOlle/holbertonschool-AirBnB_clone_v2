@@ -5,7 +5,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
 from models.city import City
-from models import storage
+import models
 
 
 class State(BaseModel, Base):
@@ -19,8 +19,10 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         """Getter of cities"""
+        city_dict = models.storage.all(City)
+        state_query = self.id
         list_city = []
-        for city in storage.all(City):
-            if self.id == city.state_id:
-                list_city.append(city)
+        for key, value in city_dict.items():
+            if value.state_id == self.id:
+                list_city.append(value)
         return list_city
