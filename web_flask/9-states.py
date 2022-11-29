@@ -49,7 +49,6 @@ def states_id(id=""):
         cities.append(value)
     return render_template("9-states.html", id=id, states=states,
                            cities=cities)
-    
 
 
 @app.teardown_appcontext
